@@ -30,4 +30,5 @@ proc.on('exit', async () => {
     }
 
     console.log(message);
+    process.env.CHECK_PR_OUTPUT = message;
 });
