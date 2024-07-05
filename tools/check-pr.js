@@ -20,15 +20,17 @@ proc.on('exit', async () => {
             metadata_files.push(['../' + file, author, filename]);
         }
     }
-    await run_update(metadata_files, true);
+    const is_updated = await run_update(metadata_files);
     check_duplicate_plugins();
 
-    let is_updated = false;
     let message = '### Changes are detected:\n';
     for (const [, author, filename] of metadata_files) {
-        const meta = fs.readFileSync(`../dist/${author}/${ext(filename, 'meta')}`, 'utf8');
-        message += `**${author}/${ext(filename, 'meta')}**\n\`\`\`\n${meta}\n\`\`\`\n---\n`;
-        is_updated = true;
+        try {
+            const meta = fs.readFileSync(`../dist/${author}/${ext(filename, 'meta')}`, 'utf8');
+            message += `**${author}/${ext(filename, 'meta')}**\n\`\`\`\n${meta}\n\`\`\`\n---\n`;
+        } catch {
+            message += `**${author}/${ext(filename, 'meta')}**\nDeleted\n---\n`;
+        }
     }
     if (!is_updated) {
         message = '### No changes are detected';
