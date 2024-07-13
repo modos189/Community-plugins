@@ -1,4 +1,4 @@
-# IITC Community plugins test
+# IITC Community plugins
 
 A collection of amazing plugins made by community.
 
